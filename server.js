@@ -8,7 +8,7 @@ app.use(express.json());
 const database = {
   users: [
     {
-      id: 123,
+      id: '123',
       name: 'John',
       email: 'john@gmail.com',
       password: 'password',
@@ -16,10 +16,11 @@ const database = {
       joined: new Date(),
     },
     {
-      id: 124,
+      id: '124',
       name: 'Sally',
       email: 'sally@gmail.com',
       password: 'bananas',
+      entries: 0,
       joined: new Date(),
     },
   ],
@@ -45,7 +46,7 @@ app.post('/signin', (req, res) => {
 app.post('/register', (req, res) => {
   const { name, email, password } = req.body;
   database.users.push({
-    id: 125,
+    id: '125',
     name: name,
     email: email,
     password: password,
@@ -56,16 +57,35 @@ app.post('/register', (req, res) => {
 });
 
 //user route
-app.get('profile/:id', (req, res) => {
+app.get('/profile/:id', (req, res) => {
   const { id } = req.params;
+  let found = false;
   database.users.forEach(user => {
     if (user.id === id) {
-      res.json(user);
-    } else {
-      res.status(404).json('No such user');
+      found = true;
+      return res.json(user);
     }
   });
+  if (!found) {
+    res.status(400).json('not found');
+  }
 });
+
+//
+app.put('/image', (req, res) => {
+  const { id } = req.body
+  let found = false;
+  database.users.forEach(user => {
+    if (user.id === id) {
+      found = true;
+      user.entries ++
+      return res.json(user.entries);
+    }
+  });
+  if (!found) {
+    res.status(400).json('not found');
+  }
+})
 
 app.listen(3000, () => {
   console.log('listening');
