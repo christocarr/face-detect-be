@@ -1,11 +1,11 @@
 const express = require('express');
-
 const bcrypt = require('bcrypt-nodejs')
-
 const app = express();
+const cors = require('cors')
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+app.use(cors())
 
 const database = {
   users: [
@@ -92,6 +92,6 @@ app.put('/image', (req, res) => {
   }
 })
 
-app.listen(3000, () => {
+app.listen(3001, () => {
   console.log('listening');
 });
