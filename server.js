@@ -1,5 +1,7 @@
 const express = require('express');
 
+const bcrypt = require('bcrypt-nodejs')
+
 const app = express();
 
 app.use(express.urlencoded({ extended: false }));
@@ -45,6 +47,9 @@ app.post('/signin', (req, res) => {
 //register route
 app.post('/register', (req, res) => {
   const { name, email, password } = req.body;
+  bcrypt.hash(password, null, null, (err, hash) => {
+    console.log(hash)
+  })
   database.users.push({
     id: '125',
     name: name,
