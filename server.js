@@ -1,11 +1,22 @@
 const express = require('express');
-const bcrypt = require('bcrypt-nodejs')
+const bcrypt = require('bcrypt-nodejs');
 const app = express();
-const cors = require('cors')
+const cors = require('cors');
+const knex = require('knex');
+
+knex({
+  client: 'pg',
+  connection: {
+    host: 'http://127.0.0.1',
+    user: 'postgres',
+    password: '',
+    database: 'face_detect',
+  },
+});
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
-app.use(cors())
+app.use(cors());
 
 app.get('/', (req, res) => {
   res.send(database.users);
@@ -27,8 +38,8 @@ app.post('/signin', (req, res) => {
 app.post('/register', (req, res) => {
   const { name, email, password } = req.body;
   bcrypt.hash(password, null, null, (err, hash) => {
-    console.log(hash)
-  })
+    console.log(hash);
+  });
   database.users.push({
     id: '125',
     name: name,
@@ -56,19 +67,19 @@ app.get('/profile/:id', (req, res) => {
 
 //
 app.put('/image', (req, res) => {
-  const { id } = req.body
+  const { id } = req.body;
   let found = false;
   database.users.forEach(user => {
     if (user.id === id) {
       found = true;
-      user.entries ++
+      user.entries++;
       return res.json(user.entries);
     }
   });
   if (!found) {
     res.status(400).json('not found');
   }
-})
+});
 
 app.listen(3001, () => {
   console.log('listening');
