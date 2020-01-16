@@ -57,10 +57,13 @@ app.get('/profile/:id', (req, res) => {
   db.select('*')
     .from('users')
     .where({ id: id })
-    .then(user => res.json(user[0]));
-  // if (!found) {
-  //   res.status(400).json('not found');
-  // }
+    .then(user => {
+      if (user.length) {
+        res.json(user[0])
+      } else {
+        res.status(400).json('Not found')
+      }
+    });
 });
 
 //
