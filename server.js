@@ -40,12 +40,15 @@ app.post('/register', (req, res) => {
   bcrypt.hash(password, null, null, (err, hash) => {
     console.log(hash);
   });
-  db('users').insert({
+  db('users')
+  .returning('*')
+  .insert({
     email: email,
     name: name,
     joined: new Date()
-  }).then(console.log)
-  res.json(db);
+  })
+  .then(user => res.json(user[0]))
+  .catch(err => res.status(400).json('Unable to register'))
 });
 
 //user route
