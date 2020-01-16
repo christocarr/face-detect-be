@@ -8,8 +8,8 @@ const db = knex({
   client: 'pg',
   connection: {
     host: '127.0.0.1',
-    user: '',
-    password: '',
+    user: 'postgres',
+    password: 'test',
     database: 'face_detect',
   },
 });
@@ -43,10 +43,9 @@ app.post('/register', (req, res) => {
   db('users').insert({
     email: email,
     name: name,
-    date_joined: new Date()
+    joined: new Date()
   }).then(console.log)
-  // res.json(database.users[database.users.length - 1]);
-  res.send('success')
+  res.json(db);
 });
 
 //user route
