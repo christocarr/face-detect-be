@@ -4,11 +4,11 @@ const app = express();
 const cors = require('cors');
 const knex = require('knex');
 
-knex({
+const db = knex({
   client: 'pg',
   connection: {
-    host: 'http://127.0.0.1',
-    user: 'postgres',
+    host: '127.0.0.1',
+    user: '',
     password: '',
     database: 'face_detect',
   },
@@ -40,14 +40,13 @@ app.post('/register', (req, res) => {
   bcrypt.hash(password, null, null, (err, hash) => {
     console.log(hash);
   });
-  database.users.push({
-    id: '125',
-    name: name,
+  db('users').insert({
     email: email,
-    entries: 0,
-    joined: new Date(),
-  });
-  res.json(database.users[database.users.length - 1]);
+    name: name,
+    date_joined: new Date()
+  }).then(console.log)
+  // res.json(database.users[database.users.length - 1]);
+  res.send('success')
 });
 
 //user route
