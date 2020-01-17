@@ -37,9 +37,8 @@ app.post('/signin', (req, res) => {
 //register route
 app.post('/register', (req, res) => {
   const { name, email, password } = req.body;
-  bcrypt.hash(password, null, null, (err, hash) => {
-    console.log(hash);
-  });
+  const hash = bcrypt.hashSync(password)
+
   db('users')
     .returning('*')
     .insert({
@@ -66,7 +65,7 @@ app.get('/profile/:id', (req, res) => {
     });
 });
 
-//
+//image route
 app.put('/image', (req, res) => {
   const { id } = req.body;
   db('users').where('id', '=', id)
